@@ -30,6 +30,8 @@ use_cuda = torch.cuda.is_available()
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 
+if args.fft:
+    print('Using FFT features')
 # Data
 print('==> Preparing data..')
 transform = transforms.Compose([
@@ -62,7 +64,10 @@ else:
     # net = ResNet18()
     # net = GoogLeNet()
     # net = DenseNet121()
-    net = ResNeXt29_2x64d(cin=9)
+    if args.fft:
+        net = ResNeXt29_2x64d(cin=9)
+    else:
+        net = ResNeXt29_2x64d(cin=3)
 
 if use_cuda:
     net.cuda()
